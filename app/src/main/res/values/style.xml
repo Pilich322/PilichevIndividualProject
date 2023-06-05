@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="bnv" parent="Widget.Design.BottomNavigationView">
+        <item name="height">56dp</item>
+        <item name="backgroundTint">@color/orange_200</item>
+        <item name="itemIconTint">@color/bnv_menu_color</item>
+        <item name="itemTextColor">@color/bnv_menu_color</item>
+    </style>
+</resources>

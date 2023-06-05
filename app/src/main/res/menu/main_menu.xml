@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/groupItem"
+        android:icon="@drawable/baseline_people_alt_24"
+        android:title="Группы"/>
+    <item
+    android:id="@+id/studentItem"
+    android:icon="@drawable/baseline_person_24"
+    android:title="Студенты"/>
+</menu>
