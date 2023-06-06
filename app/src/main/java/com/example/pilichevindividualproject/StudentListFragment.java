@@ -10,18 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pilichevindividualproject.databinding.FragmentStudentListBinding;
 
-public class StudentListFragment extends Fragment {
 
+ public class StudentListFragment extends Fragment {
 
+    private FragmentStudentListBinding binding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_student_list, container, false);
+        binding = FragmentStudentListBinding.inflate(inflater,container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
     }
 }

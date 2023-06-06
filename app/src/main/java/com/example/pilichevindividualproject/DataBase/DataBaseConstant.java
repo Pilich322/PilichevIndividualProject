@@ -7,7 +7,7 @@ public class DataBaseConstant {
     public static final String STUDENTS_TABLE_NAME = "students";
     public static final String STUDENT_ID = "student_id";
     public static final String STUDENT_FIRSTNAME = "firstName";
-    public static final String STUDENT_LASTNAME = "lastName";
+    public static final String STUDENT_SECONDNAME = "lastName";
     public static final String STUDENT_MIDDLENAME = "middleName";
     public static final String STUDENT_BIRTHDAY = "birthday";
     public static final String STUDENT_GROUP_ID = "group_id";
@@ -19,7 +19,7 @@ public class DataBaseConstant {
 
     public static final String CREATE_TABLE_STUDENTS = "create table if not exists " +
             STUDENTS_TABLE_NAME + " ( " + STUDENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
-            STUDENT_FIRSTNAME + " text not null, " + STUDENT_LASTNAME + " text not null, " +
+            STUDENT_FIRSTNAME + " text not null, " + STUDENT_SECONDNAME + " text not null, " +
             STUDENT_MIDDLENAME + " text not null, " + STUDENT_BIRTHDAY + " text not null, " +
             STUDENT_GROUP_ID + " integer, FOREIGN KEY ("+STUDENT_GROUP_ID+") REFERENCES " + GROUP_TABLE_NAME + " ("+GROUP_ID+") )";
 

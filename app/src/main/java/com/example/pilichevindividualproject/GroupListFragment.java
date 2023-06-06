@@ -10,17 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pilichevindividualproject.databinding.FragmentGroupListBinding;
+import com.example.pilichevindividualproject.databinding.GroupListItemBinding;
+
 public class GroupListFragment extends Fragment {
 
+
+   private FragmentGroupListBinding binding;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_group_list, container, false);
+        binding = FragmentGroupListBinding.inflate(inflater,container,false);
+        return binding.getRoot();
     }
 }
