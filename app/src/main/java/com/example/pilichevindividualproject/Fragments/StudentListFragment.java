@@ -11,13 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pilichevindividualproject.DataBase.DataBaseManager;
 import com.example.pilichevindividualproject.R;
+import com.example.pilichevindividualproject.adapters.GroupAdapter;
+import com.example.pilichevindividualproject.adapters.StudentAdapter;
 import com.example.pilichevindividualproject.databinding.FragmentStudentListBinding;
 
 
 public class StudentListFragment extends Fragment {
 
     private FragmentStudentListBinding binding;
+    private DataBaseManager dataBaseManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,6 +34,8 @@ public class StudentListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         StudentAddFragment studentAddFragment = new StudentAddFragment();
+        dataBaseManager = new DataBaseManager(getContext());
+        dataBaseManager.openDbToRead();
         binding.floatingActionButtonAddStudent.setOnClickListener(v -> {
             FragmentTransaction fragmentTransaction = getParentFragmentManager()
                     .beginTransaction()
@@ -43,5 +49,13 @@ public class StudentListFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+        StudentAdapter studentAdapter= new StudentAdapter(getContext(),dataBaseManager.getAllStudentsFromDb());
+        binding.recyclerViewStudent.setAdapter(studentAdapter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dataBaseManager.closeDb();
     }
 }

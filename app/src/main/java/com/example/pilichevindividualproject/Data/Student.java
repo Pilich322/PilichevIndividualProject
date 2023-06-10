@@ -18,6 +18,7 @@ public class Student implements Serializable {
         this.birthday = birthday;
         this.groupId = groupId;
     }
+    public Student() {}
 
     public int getId() {
         return id;

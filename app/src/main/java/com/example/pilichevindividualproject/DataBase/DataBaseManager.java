@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.example.pilichevindividualproject.Data.Group;
 import com.example.pilichevindividualproject.Data.Student;
@@ -33,7 +34,37 @@ public class DataBaseManager{
             group.setId(cursor.getInt(cursor.getColumnIndex(DataBaseConstant.GROUP_ID)));
             groupList.add(group);
         }
+        cursor.close();
         return groupList;
+    }
+    @SuppressLint("Range")
+    public List<Student> getAllStudentsFromDb(){
+        List<Student> studentList = new ArrayList<>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("Select * From "+ DataBaseConstant.STUDENTS_TABLE_NAME,null);
+        while (cursor.moveToNext()){
+            Student student  = new Student();
+            student.setFirstName(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_FIRSTNAME)));
+            student.setMiddleName(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_MIDDLENAME)));
+            student.setSecondName(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_SECONDNAME)));
+            student.setBirthday(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_BIRTHDAY)));
+            student.setGroupId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_GROUP_ID))));
+            student.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_ID))));
+            studentList.add(student);
+        }
+        cursor.close();
+        return studentList;
+    }
+
+    public void deleteGroup(Group group){
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("Select * From " + DataBaseConstant.STUDENTS_TABLE_NAME,null);
+        while (cursor.moveToNext()) {
+        if(cursor.getColumnIndex(DataBaseConstant.STUDENT_GROUP_ID) == group.getId()) {
+            Toast.makeText(context.getApplicationContext(), "В группе есть студенты", Toast.LENGTH_SHORT).show();
+            break;
+        }
+        else
+            db.delete(DataBaseConstant.GROUP_TABLE_NAME,DataBaseConstant.GROUP_ID + " = "  + group.getId(),null);
+        }
     }
 
     public void insertStudent(Student student){

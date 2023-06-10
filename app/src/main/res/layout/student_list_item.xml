@@ -38,20 +38,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="Дата рождения"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textViewStudentSecondName"
         app:layout_constraintTop_toBottomOf="@+id/textViewStudentSecondName" />
-
-    <TextView
-        android:id="@+id/textViewStudentGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Группа"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewStudentBirthday"
-        app:layout_constraintTop_toTopOf="@+id/textViewStudentBirthday" />
 
     <ImageView
         android:id="@+id/imageViewDeleteStudent"
