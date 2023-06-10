@@ -8,11 +8,12 @@ public class Group implements Serializable {
     private String name;
     private int number;
 
-    public Group(int id, String name, int number) {
-        this.id = id;
+    public Group(String name, int number) {
         this.name = name;
         this.number = number;
     }
+
+    public Group(){}
 
     @Override
     public String toString() {

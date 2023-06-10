@@ -1,15 +1,17 @@
-package com.example.pilichevindividualproject;
+package com.example.pilichevindividualproject.Fragments;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pilichevindividualproject.R;
 import com.example.pilichevindividualproject.databinding.FragmentGroupListBinding;
 import com.example.pilichevindividualproject.databinding.GroupListItemBinding;
 
@@ -20,8 +22,20 @@ public class GroupListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
+        GroupAddFragment addFragment = new GroupAddFragment();
+        binding.floatingActionButtonAddGroup.setOnClickListener(v -> {
+            FragmentTransaction fragmentTransaction = getParentFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(
+                            R.anim.slide_in,
+                            R.anim.fade_out,
+                            R.anim.fade_in,
+                            R.anim.slide_out
+                    );
+            fragmentTransaction.replace(R.id.frameLayoutMain, addFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
     }
 
     @Override

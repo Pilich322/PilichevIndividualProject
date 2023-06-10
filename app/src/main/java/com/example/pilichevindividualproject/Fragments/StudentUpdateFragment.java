@@ -1,4 +1,4 @@
- package com.example.pilichevindividualproject;
+package com.example.pilichevindividualproject.Fragments;
 
 import android.os.Bundle;
 
@@ -10,22 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.pilichevindividualproject.databinding.FragmentStudentListBinding;
+import com.example.pilichevindividualproject.databinding.FragmentStudentUpdateBinding;
 
+public class StudentUpdateFragment extends Fragment {
 
- public class StudentListFragment extends Fragment {
-
-    private FragmentStudentListBinding binding;
+    FragmentStudentUpdateBinding binding;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentStudentListBinding.inflate(inflater,container, false);
+        binding = FragmentStudentUpdateBinding.inflate(inflater,container,false);
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 }

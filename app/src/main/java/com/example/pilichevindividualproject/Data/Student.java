@@ -11,8 +11,7 @@ public class Student implements Serializable {
     private String birthday;
     private int groupId;
 
-    public Student(int id, String firstName, String secondName, String middleName, String birthday, int groupId) {
-        this.id = id;
+    public Student(String firstName, String secondName, String middleName, String birthday, int groupId) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.middleName = middleName;

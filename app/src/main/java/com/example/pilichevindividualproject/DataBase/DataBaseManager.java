@@ -1,11 +1,16 @@
 package com.example.pilichevindividualproject.DataBase;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.pilichevindividualproject.Data.Group;
 import com.example.pilichevindividualproject.Data.Student;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseManager{
     private final Context context;
@@ -15,6 +20,20 @@ public class DataBaseManager{
     public DataBaseManager (Context context){
         this.context = context;
         dbHelper = new DataBaseHelper(this.context);
+    }
+
+    @SuppressLint("Range")
+    public List<Group> getAllGroupsFromDb(){
+        List<Group> groupList = new ArrayList<>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("Select * From "+ DataBaseConstant.GROUP_TABLE_NAME,null);
+        while (cursor.moveToNext()){
+            Group group = new Group();
+            group.setName(cursor.getString(cursor.getColumnIndex(DataBaseConstant.GROUP_NAME)));
+            group.setNumber(cursor.getInt(cursor.getColumnIndex(DataBaseConstant.GROUP_NUMBER)));
+            group.setId(cursor.getInt(cursor.getColumnIndex(DataBaseConstant.GROUP_ID)));
+            groupList.add(group);
+        }
+        return groupList;
     }
 
     public void insertStudent(Student student){
