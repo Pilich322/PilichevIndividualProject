@@ -21,12 +21,19 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     private final LayoutInflater layoutInflater;
     private final List<Group> groupList;
-    private DataBaseManager dbManager;
+    private final DataBaseManager dbManager;
 
-    public GroupAdapter(Context context, List<Group> groupList) {
+    private final OnGroupClickListener onGroupClickListener;
+
+    public interface OnGroupClickListener{
+        void onGroupClick(Group group, int position);
+    }
+
+    public GroupAdapter(Context context, List<Group> groupList,OnGroupClickListener onGroupClickListener) {
         layoutInflater = LayoutInflater.from(context);
         this.groupList = groupList;
         dbManager = new DataBaseManager(context);
+        this.onGroupClickListener = onGroupClickListener;
     }
 
     @NonNull
@@ -48,6 +55,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             notifyItemRemoved(position);
             dbManager.closeDb();
         });
+        holder.change.setOnClickListener(v -> onGroupClickListener.onGroupClick(group,position));
     }
 
     @Override

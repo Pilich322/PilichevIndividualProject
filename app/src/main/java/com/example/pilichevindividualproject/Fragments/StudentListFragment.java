@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.pilichevindividualproject.Data.Student;
 import com.example.pilichevindividualproject.DataBase.DataBaseManager;
 import com.example.pilichevindividualproject.R;
 import com.example.pilichevindividualproject.adapters.GroupAdapter;
@@ -33,24 +34,32 @@ public class StudentListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        StudentAddFragment studentAddFragment = new StudentAddFragment();
         dataBaseManager = new DataBaseManager(getContext());
         dataBaseManager.openDbToRead();
         binding.floatingActionButtonAddStudent.setOnClickListener(v -> {
-            FragmentTransaction fragmentTransaction = getParentFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(
-                    R.anim.slide_in,
-                    R.anim.fade_out,
-                    R.anim.fade_in,
-                    R.anim.slide_out
-            );
-            fragmentTransaction.replace(R.id.frameLayoutMain, studentAddFragment)
-                    .addToBackStack(null)
-                    .commit();
+            StudentAddFragment studentAddFragment = new StudentAddFragment();
+            setFragment(studentAddFragment);
         });
-        StudentAdapter studentAdapter= new StudentAdapter(getContext(),dataBaseManager.getAllStudentsFromDb());
+        StudentAdapter.OnStudentClickListener onStudentClickListener = (student, position) -> {
+            StudentUpdateFragment studentUpdateFragment = new StudentUpdateFragment();
+            setFragment(studentUpdateFragment);
+        };
+        StudentAdapter studentAdapter = new StudentAdapter(getContext(), dataBaseManager.getAllStudentsFromDb(),onStudentClickListener);
         binding.recyclerViewStudent.setAdapter(studentAdapter);
+    }
+
+    public void setFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getParentFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in,
+                        R.anim.fade_out,
+                        R.anim.fade_in,
+                        R.anim.slide_out
+                );
+        fragmentTransaction.replace(R.id.frameLayoutMain, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

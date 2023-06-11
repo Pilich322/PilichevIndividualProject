@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.Toast;
 
 import com.example.pilichevindividualproject.Data.Group;
@@ -22,8 +23,9 @@ import com.example.pilichevindividualproject.databinding.FragmentStudentAddBindi
 import java.util.List;
 
 public class StudentAddFragment extends Fragment {
-    FragmentStudentAddBinding binding;
-    DataBaseManager dataBaseManager;
+    private FragmentStudentAddBinding binding;
+    private DataBaseManager dataBaseManager;
+    private String birthday;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -41,6 +43,13 @@ public class StudentAddFragment extends Fragment {
         ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, groupList);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         binding.spinnerGroup.setAdapter(adapter);
+        binding.calendarViewBirthday.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                month += 1;
+                birthday = dayOfMonth + "." + month + "." + year;
+            }
+        });
         binding.buttonAddStudent.setOnClickListener(v -> {
             saveStudent();
         });
@@ -54,21 +63,22 @@ public class StudentAddFragment extends Fragment {
 
     private void saveStudent() {
         StudentListFragment studentListFragment = new StudentListFragment();
-        String fName = null;
-        String sName = null;
-        String mName = null;
-        String birthday = null;
+        String fName = new String();
+        String sName = new String();
+        String mName = new String();
         Group group = new Group();
         try {
             fName = binding.editTextTextFirstName.getText().toString();
             sName = binding.editTextTextSecondName.getText().toString();
             mName = binding.editTextTextMiddleName.getText().toString();
-            birthday = String.valueOf(binding.calendarViewBirthday.getDate());
             group = (Group) binding.spinnerGroup.getSelectedItem();
         } catch (Exception ignored) {
         }
-        Log.d("LOH", fName + " " + sName + " " + mName + " " + birthday + " " + group);
-        if (fName == null | sName == null | mName == null | birthday == null | group == null)
+        if (birthday == null) {
+            Toast.makeText(getContext(), "Вы не выбрали дату", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (fName.isEmpty() | sName.isEmpty() | mName.isEmpty())
             Toast.makeText(getContext(), "Поля не заполнены", Toast.LENGTH_SHORT).show();
         else {
             Student student = new Student(fName, sName, mName, birthday, group.getId());

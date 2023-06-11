@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pilichevindividualproject.Data.Group;
 import com.example.pilichevindividualproject.Data.Student;
 import com.example.pilichevindividualproject.DataBase.DataBaseManager;
 import com.example.pilichevindividualproject.R;
@@ -21,11 +22,16 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
     private final LayoutInflater layoutInflater;
     private final List<Student> studentList;
     private DataBaseManager dbManager;
+    private OnStudentClickListener onStudentClickListener;
 
-    public StudentAdapter(Context context, List<Student> studentList) {
+    public interface OnStudentClickListener{
+        void onStudentClick(Student student, int position);
+    }
+    public StudentAdapter(Context context, List<Student> studentList,OnStudentClickListener onStudentClickListener) {
         layoutInflater = LayoutInflater.from(context);
         this.studentList = studentList;
         dbManager = new DataBaseManager(context);
+        this.onStudentClickListener = onStudentClickListener;
     }
 
     @NonNull
@@ -42,7 +48,14 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         holder.fName.setText(student.getFirstName());
         holder.sName.setText(student.getSecondName());
         holder.mName.setText(student.getMiddleName());
-
+        holder.delete.setOnClickListener(v -> {
+            dbManager.openDbToWrite();
+            dbManager.deleteStudent(student);
+            studentList.remove(position);
+            notifyItemRemoved(position);
+            dbManager.closeDb();
+        });
+        holder.change.setOnClickListener(v -> onStudentClickListener.onStudentClick(student,position));
     }
 
     @Override
