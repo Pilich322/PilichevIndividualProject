@@ -1,4 +1,4 @@
-package com.example.pilichevindividualproject.adapters;
+package com.example.pilichevindividualproject.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pilichevindividualproject.Data.Group;
 import com.example.pilichevindividualproject.Data.Student;
 import com.example.pilichevindividualproject.DataBase.DataBaseManager;
 import com.example.pilichevindividualproject.R;

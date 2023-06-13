@@ -11,11 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.pilichevindividualproject.Data.Student;
 import com.example.pilichevindividualproject.DataBase.DataBaseManager;
 import com.example.pilichevindividualproject.R;
-import com.example.pilichevindividualproject.adapters.GroupAdapter;
-import com.example.pilichevindividualproject.adapters.StudentAdapter;
+import com.example.pilichevindividualproject.Adapters.StudentAdapter;
 import com.example.pilichevindividualproject.databinding.FragmentStudentListBinding;
 
 

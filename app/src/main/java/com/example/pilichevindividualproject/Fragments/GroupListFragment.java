@@ -15,9 +15,8 @@ import android.view.ViewGroup;
 import com.example.pilichevindividualproject.Data.Group;
 import com.example.pilichevindividualproject.DataBase.DataBaseManager;
 import com.example.pilichevindividualproject.R;
-import com.example.pilichevindividualproject.adapters.GroupAdapter;
+import com.example.pilichevindividualproject.Adapters.GroupAdapter;
 import com.example.pilichevindividualproject.databinding.FragmentGroupListBinding;
-import com.example.pilichevindividualproject.databinding.GroupListItemBinding;
 
 import java.util.List;
 
