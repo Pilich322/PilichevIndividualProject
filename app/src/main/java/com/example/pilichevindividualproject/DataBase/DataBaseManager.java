@@ -57,23 +57,25 @@ public class DataBaseManager {
         return studentList;
     }
 
-    public void deleteStudent(Student student){
+    public void deleteStudent(Student student) {
         db.delete(DataBaseConstant.STUDENTS_TABLE_NAME, DataBaseConstant.STUDENT_ID + " = " + student.getId(), null);
     }
 
-    public void deleteGroup(Group group) {
-        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("Select * From " + DataBaseConstant.STUDENTS_TABLE_NAME, null);
-        while (cursor.moveToNext()) {
-            if (cursor.getInt(5) == group.getId()) {
-                Log.d("LOH", cursor.getInt(5) + " " + group.getId());
+    private boolean checkStudent(Group group) {
+        for (Student s : getAllStudentsFromDb()) {
+            if (s.getGroupId() == group.getId()) {
                 Toast.makeText(context.getApplicationContext(), "В группе есть студенты", Toast.LENGTH_SHORT).show();
-                break;
-            } else {
-                Toast.makeText(context.getApplicationContext(), "Удаленно", Toast.LENGTH_SHORT).show();
-                db.delete(DataBaseConstant.GROUP_TABLE_NAME, DataBaseConstant.GROUP_ID + " = " + group.getId(), null);
+                return false;
             }
         }
-        cursor.close();
+        return true;
+    }
+
+    public void deleteGroup(Group group) {
+        if (checkStudent(group)) {
+            Toast.makeText(context.getApplicationContext(), "Удаленно", Toast.LENGTH_SHORT).show();
+            db.delete(DataBaseConstant.GROUP_TABLE_NAME, DataBaseConstant.GROUP_ID + " = " + group.getId(), null);
+        }
     }
 
     public void insertStudent(Student student) {
@@ -103,6 +105,24 @@ public class DataBaseManager {
         db.update(DataBaseConstant.GROUP_TABLE_NAME, cv, DataBaseConstant.GROUP_ID + " = " + group.getId(), null);
     }
 
+    @SuppressLint("Range")
+    public List<Student> updateStudentAdapter(Group group) {
+        List<Student> studentList = new ArrayList<>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("Select * From " + DataBaseConstant.STUDENTS_TABLE_NAME + " Where " + DataBaseConstant.STUDENT_GROUP_ID + " = " + group.getId(), null);
+        while (cursor.moveToNext()) {
+            Student student = new Student();
+            student.setFirstName(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_FIRSTNAME)));
+            student.setMiddleName(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_MIDDLENAME)));
+            student.setSecondName(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_SECONDNAME)));
+            student.setBirthday(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_BIRTHDAY)));
+            student.setGroupId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_GROUP_ID))));
+            student.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_ID))));
+            studentList.add(student);
+        }
+        cursor.close();
+        return studentList;
+    }
+
     public void insertGroup(Group group) {
         ContentValues cv = new ContentValues();
         cv.put(DataBaseConstant.GROUP_NAME, group.getName());
@@ -112,10 +132,6 @@ public class DataBaseManager {
 
     public void openDbToWrite() {
         db = dbHelper.getWritableDatabase();
-    }
-
-    public void openDbToRead() {
-        db = dbHelper.getReadableDatabase();
     }
 
     public void closeDb() {

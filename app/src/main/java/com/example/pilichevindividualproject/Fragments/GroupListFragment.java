@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.example.pilichevindividualproject.Data.Group;
 import com.example.pilichevindividualproject.DataBase.DataBaseManager;
 import com.example.pilichevindividualproject.R;
-import com.example.pilichevindividualproject.Adapters.GroupAdapter;
+import com.example.pilichevindividualproject.adapters.GroupAdapter;
 import com.example.pilichevindividualproject.databinding.FragmentGroupListBinding;
 
 import java.util.List;
@@ -25,25 +25,26 @@ public class GroupListFragment extends Fragment {
     private DataBaseManager dataBaseManager;
     private FragmentGroupListBinding binding;
 
+    private GroupAdapter groupAdapter;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         dataBaseManager = new DataBaseManager(getContext());
-        dataBaseManager.openDbToRead();
-        List<Group> groupList = dataBaseManager.getAllGroupsFromDb();
-        Log.d("LOG", "ТУТ");
-        for (Group group : groupList) {
-            Log.d("LOG", group.getName() + " " + group.getNumber() + " " + group.getId());
-        }
+        dataBaseManager.openDbToWrite();
         binding.floatingActionButtonAddGroup.setOnClickListener(v -> {
             GroupAddFragment addFragment = new GroupAddFragment();
             setFragment(addFragment);
         });
-        GroupAdapter.OnGroupClickListener onGroupClickListener = (group, position) -> {
+        GroupAdapter.OnChangeClickListener onChangeClickListener = (group, position) -> {
             GroupUpdateFragment groupUpdateFragment = new GroupUpdateFragment();
             setFragment(groupUpdateFragment);
         };
-        GroupAdapter groupAdapter = new GroupAdapter(getContext(), dataBaseManager.getAllGroupsFromDb(), onGroupClickListener);
+        GroupAdapter.OnDeleteClickListener onDeleteClickListener = (group, position) -> {
+            dataBaseManager.deleteGroup(group);
+            groupAdapter.updateAdapter(dataBaseManager.getAllGroupsFromDb());
+        };
+        groupAdapter = new GroupAdapter(getContext(), dataBaseManager.getAllGroupsFromDb(), onChangeClickListener,onDeleteClickListener);
         binding.recyclerViewGroup.setAdapter(groupAdapter);
     }
 

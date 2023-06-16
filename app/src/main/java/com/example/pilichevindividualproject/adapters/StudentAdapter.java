@@ -1,6 +1,7 @@
-package com.example.pilichevindividualproject.Adapters;
+package com.example.pilichevindividualproject.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +20,24 @@ import java.util.List;
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHolder> {
 
     private final LayoutInflater layoutInflater;
-    private final List<Student> studentList;
-    private DataBaseManager dbManager;
-    private OnStudentClickListener onStudentClickListener;
+    private List<Student> studentList;
+    private OnDeleteClickListener onDeleteClickListener;
+    private OnChangeClickListener onChangeClickListener;
 
-    public interface OnStudentClickListener{
-        void onStudentClick(Student student, int position);
+    public interface OnDeleteClickListener {
+        void onDeleteClick(Student student, int position);
     }
-    public StudentAdapter(Context context, List<Student> studentList,OnStudentClickListener onStudentClickListener) {
+
+    public interface OnChangeClickListener {
+        void onChangeClick(Student student, int position);
+    }
+
+    public StudentAdapter(Context context, List<Student> studentList, OnDeleteClickListener onDeleteClickListener, OnChangeClickListener onChangeClickListener) {
         layoutInflater = LayoutInflater.from(context);
         this.studentList = studentList;
-        dbManager = new DataBaseManager(context);
-        this.onStudentClickListener = onStudentClickListener;
+        this.onDeleteClickListener = onDeleteClickListener;
+        this.onChangeClickListener = onChangeClickListener;
+        Log.d("LOH", studentList.size() + "");
     }
 
     @NonNull
@@ -48,13 +55,16 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         holder.sName.setText(student.getSecondName());
         holder.mName.setText(student.getMiddleName());
         holder.delete.setOnClickListener(v -> {
-            dbManager.openDbToWrite();
-            dbManager.deleteStudent(student);
-            studentList.remove(position);
+            onDeleteClickListener.onDeleteClick(student, position);
             notifyItemRemoved(position);
-            dbManager.closeDb();
+            studentList.remove(position);
+            updateAdapter(studentList);
         });
-        holder.change.setOnClickListener(v -> onStudentClickListener.onStudentClick(student,position));
+        holder.change.setOnClickListener(v -> onChangeClickListener.onChangeClick(student, position));
+    }
+
+    public void updateAdapter(List<Student> newList) {
+        this.studentList = newList;
     }
 
     @Override
@@ -64,7 +74,8 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView delete, change;
-        TextView fName,sName,mName,birthday;
+        TextView fName, sName, mName, birthday;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             delete = itemView.findViewById(R.id.imageViewDeleteStudent);
