@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ public class StudentListFragment extends Fragment {
     private FragmentStudentListBinding binding;
     private DataBaseManager dataBaseManager;
     private StudentAdapter studentAdapter;
+    private Group group;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,13 +55,36 @@ public class StudentListFragment extends Fragment {
         binding.spinnerStudentGroup.setAdapter(adapter);
 
         StudentAdapter.OnChangeClickListener onChangeClickListener = (student, position) -> {
-            StudentUpdateFragment studentUpdateFragment = new StudentUpdateFragment();
+            StudentUpdateFragment studentUpdateFragment = new StudentUpdateFragment(student);
             setFragment(studentUpdateFragment);
         };
 
         StudentAdapter.OnDeleteClickListener onDeleteClickListener = (student, position) -> {
             dataBaseManager.deleteStudent(student);
         };
+
+        binding.editTextTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                studentAdapter.updateAdapter(dataBaseManager.getAllStudentsFromDbIntoEditText(s.toString()));
+                binding.recyclerViewStudent.setAdapter(studentAdapter);
+                if (s.length() == 0) {
+                    group = (Group) binding.spinnerStudentGroup.getSelectedItem();
+                    studentAdapter.updateAdapter(dataBaseManager.updateStudentAdapter(group));
+                    binding.recyclerViewStudent.setAdapter(studentAdapter);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         studentAdapter = new StudentAdapter(getContext(),
                 dataBaseManager.getAllStudentsFromDb(),
@@ -68,7 +94,7 @@ public class StudentListFragment extends Fragment {
         binding.spinnerStudentGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Group group = (Group) binding.spinnerStudentGroup.getItemAtPosition(position);
+                group = (Group) binding.spinnerStudentGroup.getItemAtPosition(position);
                 studentAdapter.updateAdapter(dataBaseManager.updateStudentAdapter(group));
                 binding.recyclerViewStudent.setAdapter(studentAdapter);
             }

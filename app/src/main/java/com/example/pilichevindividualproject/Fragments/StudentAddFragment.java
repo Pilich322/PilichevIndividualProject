@@ -47,7 +47,9 @@ public class StudentAddFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 month += 1;
-                birthday = dayOfMonth + "." + month + "." + year;
+                birthday= dayOfMonth<10?"0"+dayOfMonth + ".":dayOfMonth + ".";
+                birthday += month<10?"0"+month+".":month + ".";
+                birthday+=year;
             }
         });
         binding.buttonAddStudent.setOnClickListener(v -> {

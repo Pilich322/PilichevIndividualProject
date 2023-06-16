@@ -40,6 +40,23 @@ public class DataBaseManager {
     }
 
     @SuppressLint("Range")
+    public List<Student> getAllStudentsFromDbIntoEditText(String word) {
+        List<Student> studentList = new ArrayList<>();
+        @SuppressLint("Recycle") Cursor cursor = db.rawQuery("Select * From " + DataBaseConstant.STUDENTS_TABLE_NAME + " Where " + DataBaseConstant.STUDENT_SECONDNAME + " =?" + " or " + DataBaseConstant.STUDENT_FIRSTNAME + " =?", new String[]{word});
+        while (cursor.moveToNext()) {
+            Student student = new Student();
+            student.setFirstName(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_FIRSTNAME)));
+            student.setBirthday(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_BIRTHDAY)));
+            student.setGroupId(cursor.getColumnIndex(DataBaseConstant.STUDENT_GROUP_ID));
+            student.setSecondName(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_SECONDNAME)));
+            student.setMiddleName(cursor.getString(cursor.getColumnIndex(DataBaseConstant.STUDENT_MIDDLENAME)));
+            student.setId(cursor.getColumnIndex(DataBaseConstant.STUDENT_ID));
+            studentList.add(student);
+        }
+        return studentList;
+    }
+
+    @SuppressLint("Range")
     public List<Student> getAllStudentsFromDb() {
         List<Student> studentList = new ArrayList<>();
         @SuppressLint("Recycle") Cursor cursor = db.rawQuery("Select * From " + DataBaseConstant.STUDENTS_TABLE_NAME, null);

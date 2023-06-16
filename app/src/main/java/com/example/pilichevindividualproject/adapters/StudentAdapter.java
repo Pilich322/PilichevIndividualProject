@@ -37,7 +37,6 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         this.studentList = studentList;
         this.onDeleteClickListener = onDeleteClickListener;
         this.onChangeClickListener = onChangeClickListener;
-        Log.d("LOH", studentList.size() + "");
     }
 
     @NonNull

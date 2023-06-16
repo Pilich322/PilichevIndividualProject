@@ -1,14 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.StudentUpdateFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Изменение студента"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/editTextTextSecondName"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Фамилия"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/editTextTextFirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Имя"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextSecondName"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextSecondName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextSecondName" />
+
+    <EditText
+        android:id="@+id/editTextTextMiddleName"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Отчество"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextFirstName"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextFirstName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextFirstName" />
+
+    <CalendarView
+        android:id="@+id/calendarViewBirthdayStudent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextMiddleName"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextMiddleName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextMiddleName" />
+
+    <Spinner
+        android:id="@+id/spinnerGroupUpdate"
+        style="@android:style/Widget.Material.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/calendarViewBirthdayStudent"
+        app:layout_constraintStart_toStartOf="@+id/calendarViewBirthdayStudent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarViewBirthdayStudent" />
+
+    <Button
+        android:id="@+id/buttonUpdateStudent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerGroupUpdate"
+        app:layout_constraintStart_toStartOf="@+id/spinnerGroupUpdate"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerGroupUpdate" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

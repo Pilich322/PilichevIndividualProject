@@ -53,7 +53,6 @@ public class GroupAddFragment extends Fragment {
         }
        catch (Exception ignored){
        }
-        Log.d("LOH",name + number);
         if(name == null)
             Toast.makeText(getContext(), "Поле имя или номер не заполнено", Toast.LENGTH_SHORT).show();
         else {

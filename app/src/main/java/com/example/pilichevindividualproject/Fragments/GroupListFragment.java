@@ -37,7 +37,7 @@ public class GroupListFragment extends Fragment {
             setFragment(addFragment);
         });
         GroupAdapter.OnChangeClickListener onChangeClickListener = (group, position) -> {
-            GroupUpdateFragment groupUpdateFragment = new GroupUpdateFragment();
+            GroupUpdateFragment groupUpdateFragment = new GroupUpdateFragment(group);
             setFragment(groupUpdateFragment);
         };
         GroupAdapter.OnDeleteClickListener onDeleteClickListener = (group, position) -> {
