@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,16 +39,16 @@ public class StudentAddFragment extends Fragment {
         dataBaseManager = new DataBaseManager(getContext());
         dataBaseManager.openDbToWrite();
         List<Group> groupList = dataBaseManager.getAllGroupsFromDb();
-        ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, groupList);
+        ArrayAdapter<Group> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, groupList);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         binding.spinnerGroup.setAdapter(adapter);
         binding.calendarViewBirthday.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 month += 1;
-                birthday= dayOfMonth<10?"0"+dayOfMonth + ".":dayOfMonth + ".";
-                birthday += month<10?"0"+month+".":month + ".";
-                birthday+=year;
+                birthday = dayOfMonth < 10 ? "0" + dayOfMonth + "." : dayOfMonth + ".";
+                birthday += month < 10 ? "0" + month + "." : month + ".";
+                birthday += year;
             }
         });
         binding.buttonAddStudent.setOnClickListener(v -> {

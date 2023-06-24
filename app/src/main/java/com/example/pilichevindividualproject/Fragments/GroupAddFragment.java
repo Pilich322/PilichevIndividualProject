@@ -46,15 +46,16 @@ public class GroupAddFragment extends Fragment {
     private void saveGroup(){
         GroupListFragment groupListFragment = new GroupListFragment();
         String name = null;
-        int number = 0;
+        Integer number = null;
         try {
             name = binding.editTextTextGroupName.getText().toString();
             number = Integer.parseInt(binding.editTextNumberGroupNumber.getText().toString());
         }
        catch (Exception ignored){
        }
-        if(name == null)
+        if(name.equals("") | number == null) {
             Toast.makeText(getContext(), "Поле имя или номер не заполнено", Toast.LENGTH_SHORT).show();
+        }
         else {
             Group group = new Group(name,number);
             dataBaseManager.insertGroup(group);

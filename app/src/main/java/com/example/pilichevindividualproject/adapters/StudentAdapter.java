@@ -1,7 +1,6 @@
 package com.example.pilichevindividualproject.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pilichevindividualproject.Data.Student;
-import com.example.pilichevindividualproject.DataBase.DataBaseManager;
 import com.example.pilichevindividualproject.R;
 
 import java.util.List;
@@ -21,8 +19,8 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
 
     private final LayoutInflater layoutInflater;
     private List<Student> studentList;
-    private OnDeleteClickListener onDeleteClickListener;
-    private OnChangeClickListener onChangeClickListener;
+    private final OnDeleteClickListener onDeleteClickListener;
+    private final OnChangeClickListener onChangeClickListener;
 
     public interface OnDeleteClickListener {
         void onDeleteClick(Student student, int position);
@@ -56,8 +54,6 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         holder.delete.setOnClickListener(v -> {
             onDeleteClickListener.onDeleteClick(student, position);
             notifyItemRemoved(position);
-            studentList.remove(position);
-            updateAdapter(studentList);
         });
         holder.change.setOnClickListener(v -> onChangeClickListener.onChangeClick(student, position));
     }

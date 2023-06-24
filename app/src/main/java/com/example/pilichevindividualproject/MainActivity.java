@@ -17,21 +17,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setFragment(new GroupListFragment());
         binding.bnvMenu.setOnItemSelectedListener(item -> {
-            if(item.getItemId()==R.id.studentItem)
+            if (item.getItemId() == R.id.studentItem)
                 setFragment(new StudentListFragment());
-            if(item.getItemId()==R.id.groupItem)
+            if (item.getItemId() == R.id.groupItem)
                 setFragment(new GroupListFragment());
             return true;
         });
     }
 
-    public void setFragment(Fragment fragment){
+    public void setFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().setCustomAnimations(
-                R.anim.slide_in,
-                R.anim.fade_out,
-                R.anim.fade_in,
-                R.anim.slide_out
-        ).replace(R.id.frameLayoutMain,fragment)
+                        R.anim.slide_in,
+                        R.anim.fade_out,
+                        R.anim.fade_in,
+                        R.anim.slide_out
+                ).replace(R.id.frameLayoutMain, fragment)
                 .disallowAddToBackStack()
                 .commit();
     }

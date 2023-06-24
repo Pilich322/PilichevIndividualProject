@@ -9,14 +9,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.example.pilichevindividualproject.Data.Student;
+
 import com.example.pilichevindividualproject.adapters.StudentAdapter;
 import com.example.pilichevindividualproject.Data.Group;
 import com.example.pilichevindividualproject.DataBase.DataBaseManager;
@@ -34,8 +33,7 @@ public class StudentListFragment extends Fragment {
     private Group group;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentStudentListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -61,6 +59,7 @@ public class StudentListFragment extends Fragment {
 
         StudentAdapter.OnDeleteClickListener onDeleteClickListener = (student, position) -> {
             dataBaseManager.deleteStudent(student);
+            studentAdapter.updateAdapter(dataBaseManager.getAllStudentsFromDb());
         };
 
         binding.editTextTextSearch.addTextChangedListener(new TextWatcher() {
@@ -79,17 +78,12 @@ public class StudentListFragment extends Fragment {
                     binding.recyclerViewStudent.setAdapter(studentAdapter);
                 }
             }
-
             @Override
             public void afterTextChanged(Editable s) {
 
             }
         });
-
-        studentAdapter = new StudentAdapter(getContext(),
-                dataBaseManager.getAllStudentsFromDb(),
-                onDeleteClickListener,
-                onChangeClickListener);
+        studentAdapter = new StudentAdapter(getContext(), dataBaseManager.getAllStudentsFromDb(), onDeleteClickListener, onChangeClickListener);
         binding.recyclerViewStudent.setAdapter(studentAdapter);
         binding.spinnerStudentGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -103,21 +97,11 @@ public class StudentListFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
     }
 
     public void setFragment(Fragment fragment) {
-        FragmentTransaction fragmentTransaction = getParentFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(
-                        R.anim.slide_in,
-                        R.anim.fade_out,
-                        R.anim.fade_in,
-                        R.anim.slide_out
-                );
-        fragmentTransaction.replace(R.id.frameLayoutMain, fragment)
-                .addToBackStack(null)
-                .commit();
+        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in, R.anim.slide_out);
+        fragmentTransaction.replace(R.id.frameLayoutMain, fragment).addToBackStack(null).commit();
     }
 
     @Override

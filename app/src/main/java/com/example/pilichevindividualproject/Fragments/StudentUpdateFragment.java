@@ -6,12 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
 import android.widget.Toast;
 
 import com.example.pilichevindividualproject.Data.Group;
@@ -21,7 +19,6 @@ import com.example.pilichevindividualproject.R;
 import com.example.pilichevindividualproject.databinding.FragmentStudentUpdateBinding;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class StudentUpdateFragment extends Fragment {
@@ -49,7 +46,7 @@ public class StudentUpdateFragment extends Fragment {
         dataBaseManager = new DataBaseManager(getContext());
         dataBaseManager.openDbToWrite();
         List<Group> groupList = dataBaseManager.getAllGroupsFromDb();
-        ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, groupList);
+        ArrayAdapter<Group> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, groupList);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         binding.spinnerGroupUpdate.setAdapter(adapter);
         for (Group group : groupList)
@@ -63,14 +60,11 @@ public class StudentUpdateFragment extends Fragment {
         binding.editTextTextMiddleName.setText(student.getMiddleName());
         binding.editTextTextFirstName.setText(student.getFirstName());
         binding.editTextTextSecondName.setText(student.getSecondName());
-        binding.calendarViewBirthdayStudent.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                month += 1;
-                birthday= dayOfMonth<10?"0"+dayOfMonth + ".":dayOfMonth + ".";
-                birthday += month<10?"0"+month+".":month + ".";
-                birthday+=year;
-            }
+        binding.calendarViewBirthdayStudent.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+            month += 1;
+            birthday= dayOfMonth<10?"0"+dayOfMonth + ".":dayOfMonth + ".";
+            birthday += month<10?"0"+month+".":month + ".";
+            birthday+=year;
         });
         binding.buttonUpdateStudent.setOnClickListener(v -> updateStudent());
     }
