@@ -33,7 +33,7 @@ public class StudentListFragment extends Fragment {
     private Group group;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentStudentListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -65,9 +65,7 @@ public class StudentListFragment extends Fragment {
         binding.editTextTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 studentAdapter.updateAdapter(dataBaseManager.getAllStudentsFromDbIntoEditText(s.toString()));
@@ -80,23 +78,27 @@ public class StudentListFragment extends Fragment {
             }
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
         studentAdapter = new StudentAdapter(getContext(), dataBaseManager.getAllStudentsFromDb(), onDeleteClickListener, onChangeClickListener);
-        binding.recyclerViewStudent.setAdapter(studentAdapter);
+        updateRecyclerView();
         binding.spinnerStudentGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 group = (Group) binding.spinnerStudentGroup.getItemAtPosition(position);
                 studentAdapter.updateAdapter(dataBaseManager.updateStudentAdapter(group));
-                binding.recyclerViewStudent.setAdapter(studentAdapter);
+                updateRecyclerView();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+    //Загрузка данных в Recycler в потоке
+    public void updateRecyclerView(){
+        Thread newThread = new Thread(() -> binding.recyclerViewStudent.post(() -> binding.recyclerViewStudent.setAdapter(studentAdapter)));
+        newThread.start();
     }
 
     public void setFragment(Fragment fragment) {

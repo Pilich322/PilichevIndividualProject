@@ -24,7 +24,7 @@ public class GroupAddFragment extends Fragment {
     DataBaseManager dataBaseManager;
     FragmentGroupAddBinding binding;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentGroupAddBinding.inflate(inflater,container,false);
         return binding.getRoot();
@@ -43,9 +43,10 @@ public class GroupAddFragment extends Fragment {
         super.onDestroy();
         dataBaseManager.closeDb();
     }
+    //Сохранение группы
     private void saveGroup(){
         GroupListFragment groupListFragment = new GroupListFragment();
-        String name = null;
+        String name = "";
         Integer number = null;
         try {
             name = binding.editTextTextGroupName.getText().toString();
@@ -54,12 +55,12 @@ public class GroupAddFragment extends Fragment {
        catch (Exception ignored){
        }
         if(name.equals("") | number == null) {
-            Toast.makeText(getContext(), "Поле имя или номер не заполнено", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.emptyFields, Toast.LENGTH_SHORT).show();
         }
         else {
             Group group = new Group(name,number);
             dataBaseManager.insertGroup(group);
-            Toast.makeText(getContext(), "Сохранено", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
             getParentFragmentManager().beginTransaction().replace(R.id.frameLayoutMain,groupListFragment)
                     .disallowAddToBackStack()
                     .commit();

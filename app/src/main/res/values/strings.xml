@@ -3,4 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Сохранить</string>
+    <string name="saved">Сохранено</string>
+    <string name="emptyFields">Поля не заполнены</string>
+    <string name="delete">Удалено</string>
 </resources>

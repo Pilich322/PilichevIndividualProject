@@ -44,13 +44,13 @@ public class GroupUpdateFragment extends Fragment {
         binding.editTextTextGroupNameUpdate.setText(group.getName());
         binding.editTextNumberGroupNumberUpdate.setText(String.valueOf(group.getNumber()));
     }
-
+    //Обновление данных о группе
     private void updateGroup() {
         GroupListFragment groupListFragment = new GroupListFragment();
         group.setName(binding.editTextTextGroupNameUpdate.getText().toString());
         group.setNumber(Integer.parseInt(binding.editTextNumberGroupNumberUpdate.getText().toString()));
         dataBaseManager.updateGroup(group);
-        Toast.makeText(getContext(), "Сохранено", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
         getParentFragmentManager().beginTransaction().replace(R.id.frameLayoutMain,groupListFragment)
                 .disallowAddToBackStack()
                 .commit();

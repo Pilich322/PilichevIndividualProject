@@ -7,18 +7,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.pilichevindividualproject.Data.Group;
 import com.example.pilichevindividualproject.DataBase.DataBaseManager;
 import com.example.pilichevindividualproject.R;
 import com.example.pilichevindividualproject.adapters.GroupAdapter;
 import com.example.pilichevindividualproject.databinding.FragmentGroupListBinding;
 
-import java.util.List;
 
 public class GroupListFragment extends Fragment {
 
@@ -45,7 +42,12 @@ public class GroupListFragment extends Fragment {
             groupAdapter.updateAdapter(dataBaseManager.getAllGroupsFromDb());
         };
         groupAdapter = new GroupAdapter(getContext(), dataBaseManager.getAllGroupsFromDb(), onChangeClickListener,onDeleteClickListener);
-        binding.recyclerViewGroup.setAdapter(groupAdapter);
+        updateRecyclerView();
+    }
+    //Загрузка данных в Recycler в потоке
+    public void updateRecyclerView(){
+        Thread newThread = new Thread(() -> binding.recyclerViewGroup.post(() -> binding.recyclerViewGroup.setAdapter(groupAdapter)));
+        newThread.start();
     }
 
     private void setFragment(Fragment fragment) {
@@ -63,7 +65,7 @@ public class GroupListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentGroupListBinding.inflate(inflater, container, false);
         return binding.getRoot();

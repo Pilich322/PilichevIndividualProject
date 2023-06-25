@@ -42,14 +42,11 @@ public class StudentAddFragment extends Fragment {
         ArrayAdapter<Group> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, groupList);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         binding.spinnerGroup.setAdapter(adapter);
-        binding.calendarViewBirthday.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                month += 1;
-                birthday = dayOfMonth < 10 ? "0" + dayOfMonth + "." : dayOfMonth + ".";
-                birthday += month < 10 ? "0" + month + "." : month + ".";
-                birthday += year;
-            }
+        binding.calendarViewBirthday.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+            month += 1;
+            birthday = dayOfMonth < 10 ? "0" + dayOfMonth + "." : dayOfMonth + ".";
+            birthday += month < 10 ? "0" + month + "." : month + ".";
+            birthday += year;
         });
         binding.buttonAddStudent.setOnClickListener(v -> {
             saveStudent();
@@ -61,12 +58,12 @@ public class StudentAddFragment extends Fragment {
         super.onDestroy();
         dataBaseManager.closeDb();
     }
-
+    //Сохранение информации о студенте
     private void saveStudent() {
         StudentListFragment studentListFragment = new StudentListFragment();
-        String fName = new String();
-        String sName = new String();
-        String mName = new String();
+        String fName = "";
+        String sName = "";
+        String mName = "";
         Group group = new Group();
         try {
             fName = binding.editTextTextFirstName.getText().toString();
@@ -75,16 +72,20 @@ public class StudentAddFragment extends Fragment {
             group = (Group) binding.spinnerGroup.getSelectedItem();
         } catch (Exception ignored) {
         }
+        if(group==null){
+            Toast.makeText(getContext(), "Вы не выбрали группу", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (birthday == null) {
             Toast.makeText(getContext(), "Вы не выбрали дату", Toast.LENGTH_SHORT).show();
             return;
         }
         if (fName.isEmpty() | sName.isEmpty() | mName.isEmpty())
-            Toast.makeText(getContext(), "Поля не заполнены", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.emptyFields, Toast.LENGTH_SHORT).show();
         else {
             Student student = new Student(fName, sName, mName, birthday, group.getId());
             dataBaseManager.insertStudent(student);
-            Toast.makeText(getContext(), "Сохранено", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
             getParentFragmentManager().beginTransaction().replace(R.id.frameLayoutMain, studentListFragment)
                     .disallowAddToBackStack()
                     .commit();

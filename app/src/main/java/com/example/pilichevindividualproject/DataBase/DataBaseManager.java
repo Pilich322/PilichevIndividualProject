@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.pilichevindividualproject.Data.Group;
 import com.example.pilichevindividualproject.Data.Student;
+import com.example.pilichevindividualproject.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,7 @@ public class DataBaseManager {
     }
 
     public void deleteStudent(Student student) {
+        Toast.makeText(context.getApplicationContext(), R.string.delete, Toast.LENGTH_SHORT).show();
         db.delete(DataBaseConstant.STUDENTS_TABLE_NAME, DataBaseConstant.STUDENT_ID + " = " + student.getId(), null);
     }
 
@@ -90,7 +92,7 @@ public class DataBaseManager {
 
     public void deleteGroup(Group group) {
         if (checkStudent(group)) {
-            Toast.makeText(context.getApplicationContext(), "Удаленно", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context.getApplicationContext(), R.string.delete, Toast.LENGTH_SHORT).show();
             db.delete(DataBaseConstant.GROUP_TABLE_NAME, DataBaseConstant.GROUP_ID + " = " + group.getId(), null);
         }
     }

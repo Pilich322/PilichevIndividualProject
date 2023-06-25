@@ -68,7 +68,7 @@ public class StudentUpdateFragment extends Fragment {
         });
         binding.buttonUpdateStudent.setOnClickListener(v -> updateStudent());
     }
-
+    //Обновление информации о студенте
     public void updateStudent() {
         StudentListFragment studentListFragment = new StudentListFragment();
         student.setSecondName(binding.editTextTextSecondName.getText().toString());
@@ -78,7 +78,7 @@ public class StudentUpdateFragment extends Fragment {
         Group group = (Group) binding.spinnerGroupUpdate.getSelectedItem();
         student.setGroupId(group.getId());
         dataBaseManager.updateStudent(student);
-        Toast.makeText(getContext(), "Сохранено", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
         getParentFragmentManager().beginTransaction().replace(R.id.frameLayoutMain, studentListFragment)
                 .disallowAddToBackStack()
                 .commit();
